@@ -8,6 +8,7 @@ import 'package:mainproject/modules/staff/staff_add_event_screen.dart';
 import 'package:mainproject/modules/staff/staff_add_product_screen.dart';
 import 'package:mainproject/modules/staff/staff_eventList_screen.dart';
 import 'package:mainproject/modules/staff/staff_product_list.dart';
+import 'package:mainproject/modules/staff/staff_view_orders.dart';
 import 'package:mainproject/services/api_service.dart';
 import 'package:mainproject/utils/constants.dart';
 
@@ -20,6 +21,8 @@ class StaffRootScreen extends StatefulWidget {
 
 class _StaffRootScreenState extends State<StaffRootScreen> {
   bool isAttend = false;
+
+  String total = '0';
 
   bool loading = false;
 
@@ -34,8 +37,12 @@ class _StaffRootScreenState extends State<StaffRootScreen> {
       var today =
           "${DateTime.now().day}/0${DateTime.now().month}/${DateTime.now().year}";
 
+      total = data[0]['attendance'].length.toString();
+
       data[0]['attendance'].forEach((e) {
         isAttend = e['date'] == today;
+
+        print("is equel  ${e['date']}   ===  ${today}");
       });
 
       setState(() {
@@ -59,6 +66,7 @@ class _StaffRootScreenState extends State<StaffRootScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: KButtonColor,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Home',
           style: TextStyle(color: Colors.white),
@@ -199,6 +207,63 @@ class _StaffRootScreenState extends State<StaffRootScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const StaffBookingListScreen(),
+                          ));
+                    },
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: GridTile(
+                        footer: Container(
+                          color: KButtonColor,
+                          padding: const EdgeInsets.all(12),
+                          child: const Text(
+                            'View bookings', // Name of the item
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        child: Image.asset(
+                          'assets/images/view.jpeg', // URL of the image
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StaffViewOrders(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: GridTile(
+                          footer: Container(
+                            color: KButtonColor,
+                            padding: const EdgeInsets.all(12),
+                            child: const Text(
+                              'View  Orders', // Name of the item
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          child: Image.network(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJf3vHv3D2j4ztR6ueT6Lnk6aytFfQh1tXx5NaB0p7Lw&s')),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -231,14 +296,7 @@ class _StaffRootScreenState extends State<StaffRootScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const StaffBookingListScreen(),
-                          ));
-                    },
+                    onTap: () {},
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
@@ -248,15 +306,19 @@ class _StaffRootScreenState extends State<StaffRootScreen> {
                           color: KButtonColor,
                           padding: const EdgeInsets.all(12),
                           child: const Text(
-                            'View bookings', // Name of the item
+                            'Attendence', // Name of the item
                             style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        child: Image.asset(
-                          'assets/images/view.jpeg', // URL of the image
-                          fit: BoxFit.cover,
-                        ),
+                        child: Container(
+                            alignment: Alignment.center,
+                            color: Colors.white,
+                            child: Text(
+                              total,
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            )),
                       ),
                     ),
                   ),
@@ -293,6 +355,7 @@ class _StaffRootScreenState extends State<StaffRootScreen> {
                             ),
                           );
                           controller.success();
+                          setState(() {});
                         }
                       } else {
                         if (context.mounted) {

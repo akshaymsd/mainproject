@@ -52,10 +52,10 @@ class _UserAddComplaintScreenState extends State<UserAddComplaintScreen> {
                             : CustomButton(
                                 text: 'Save',
                                 onPressed: () async {
-                                  print('ggg');
+                                
                                   try {
                                     if (addComplaint.text.isNotEmpty) {
-                                      print('geee');
+                                     
 
                                       setState(() {
                                         loading = true;
@@ -118,7 +118,7 @@ class _UserAddComplaintScreenState extends State<UserAddComplaintScreen> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          content: Text('Our team contact you soon!!!'),
+                          content: Text(complaint['reply']),
                           actions: [
                             TextButton(
                                 onPressed: () {

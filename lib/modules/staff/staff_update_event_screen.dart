@@ -69,12 +69,12 @@ class _StaffUpdateEventScreenState extends State<StaffUpdateEventScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Product'),
+        title: Text('Upadate Event'),
       ),
       bottomSheet: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: CustomButton(
-          text: 'Add',
+          text: 'Update',
           onPressed: () async {
             if (!areControllersEmpty()) {
               setState(() {
@@ -102,9 +102,11 @@ class _StaffUpdateEventScreenState extends State<StaffUpdateEventScreen> {
               // Send the request
               var response = await request.send();
 
+              print(response.statusCode);
+
               if (response.statusCode == 200) {
                 // Handle successful response
-                print('Product added successfully');
+                
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Event updated successfully'),

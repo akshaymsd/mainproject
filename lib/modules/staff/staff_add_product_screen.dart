@@ -62,7 +62,10 @@ class _StaffAddProductScreenState extends State<StaffAddProductScreen> {
                 text: 'Add',
                 onPressed: () async {
                   if (!areControllersEmpty()) {
-                    setState(() {
+                   if(image != null){
+
+
+                     setState(() {
                       loading = true;
                     });
 
@@ -76,7 +79,7 @@ class _StaffAddProductScreenState extends State<StaffAddProductScreen> {
                     request.fields['color'] = colorController.text;
                     request.fields['price'] = priceController.text;
                     request.fields['description'] = descriptionController.text;
-                    print(image!.path);
+                 
 
                     // Add image file
                     request.files.add(
@@ -116,6 +119,18 @@ class _StaffAddProductScreenState extends State<StaffAddProductScreen> {
                     setState(() {
                       loading = false;
                     });
+
+
+
+                   }else{
+
+                     ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Add image'),
+                      ),
+                    );
+
+                   }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

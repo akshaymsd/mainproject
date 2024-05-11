@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mainproject/modules/auth/forgot_password_screen.dart';
 import 'package:mainproject/modules/auth/user_registrattion_screen.dart';
 import 'package:mainproject/modules/staff/staff_root_screen.dart';
 import 'package:mainproject/modules/user/user_root_screen.dart';
@@ -82,7 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen()),
+                  );
+                },
                 child: const Text(
                   'Forget password',
                   style: TextStyle(color: Colors.black),

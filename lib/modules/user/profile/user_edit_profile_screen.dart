@@ -106,7 +106,7 @@ class _UserEditProfileScreenState extends State<UserEditProfileScreen> {
                           phone: _phoneController.text,
                           email: _emailController.text,
                         );
-                        Navigator.pop(context);
+                        Navigator.pop(context,true);
 
                         setState(() {
                           loading = false;

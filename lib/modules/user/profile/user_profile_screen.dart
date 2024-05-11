@@ -7,11 +7,18 @@ import 'package:mainproject/utils/constants.dart';
 import 'package:mainproject/widgets/custom_button.dart';
 import 'package:mainproject/widgets/custom_text_field.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends StatefulWidget {
   UserProfileScreen({super.key});
 
+  @override
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends State<UserProfileScreen> {
   TextEditingController _nameController = TextEditingController();
+
   TextEditingController _emailController = TextEditingController();
+
   TextEditingController _phoneControllers = TextEditingController();
 
   @override
@@ -34,12 +41,13 @@ class UserProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
+                  automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   actions: [
                     IconButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: ()  async{
+                      bool a =  await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => UserEditProfileScreen(
@@ -49,6 +57,11 @@ class UserProfileScreen extends StatelessWidget {
                             ),
                           ),
                         );
+                      if(a){
+                        setState(() {
+                          
+                        });
+                      }
                       },
                       icon: Icon(
                         Icons.edit,

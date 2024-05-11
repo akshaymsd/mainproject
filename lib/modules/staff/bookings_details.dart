@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:mainproject/modules/staff/staff_update_product_screen.dart';
-import 'package:mainproject/services/api_service.dart';
-import 'package:mainproject/widgets/custom_button.dart';
 
-class StaffProductDetailsScreeen extends StatefulWidget {
-  const StaffProductDetailsScreeen({super.key, required this.details});
+class StaffBookingsDetails extends StatefulWidget {
+  const StaffBookingsDetails({super.key, required this.details});
 
   final Map<String, dynamic> details;
 
   @override
-  State<StaffProductDetailsScreeen> createState() =>
-      _StaffProductDetailsScreeenState();
+  State<StaffBookingsDetails> createState() => _StaffBookingsDetailsState();
 }
 
-class _StaffProductDetailsScreeenState
-    extends State<StaffProductDetailsScreeen> {
+class _StaffBookingsDetailsState extends State<StaffBookingsDetails> {
   DateTime? newDateTime;
 
   bool loading = false;
 
-  final locationController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    print(widget.details);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       body: Padding(
@@ -34,7 +28,7 @@ class _StaffProductDetailsScreeenState
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Image(
-                    image: NetworkImage(widget.details['image']),
+                    image: NetworkImage(widget.details['events_data']['image']),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -63,12 +57,49 @@ class _StaffProductDetailsScreeenState
                           height: 10,
                         ),
                         Text(
-                          widget.details['name'],
+                          widget.details['events_data']['event_type'],
                           maxLines: 8,
                           style: TextStyle(color: Colors.grey.shade400),
                         ),
                         const SizedBox(
                           height: 20,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Location',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          widget.details['location'],
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Text(
+                          'Date',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          widget.details['date'],
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontSize: 16,
+                          ),
                         ),
                         const Text(
                           'Description',
@@ -81,29 +112,9 @@ class _StaffProductDetailsScreeenState
                           height: 10,
                         ),
                         Text(
-                          widget.details['description'],
+                          widget.details['events_data']['description'],
                           maxLines: 8,
                           style: TextStyle(color: Colors.grey.shade400),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Color',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          widget.details['color'],
-                          style: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontSize: 16,
-                          ),
                         ),
                         Row(
                           children: [
@@ -116,7 +127,7 @@ class _StaffProductDetailsScreeenState
                             ),
                             const Spacer(),
                             Text(
-                              '₹${widget.details['price']}',
+                              '₹${widget.details['events_data']['price']}',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
@@ -130,60 +141,6 @@ class _StaffProductDetailsScreeenState
                 ),
               ),
             ),
-            loading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: CustomButton(
-                            text: 'Upadate',
-                            onPressed: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        StaffUpdateProductScreen(
-                                      name: widget.details['name'],
-                                      color: widget.details['color'],
-                                      price: widget.details['price'].toString(),
-                                      description:
-                                          widget.details['description'],
-                                      productId: widget.details['_id'],
-                                    ),
-                                  ));
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: CustomButton(
-                            text: 'Delete',
-                            onPressed: () async {
-                              setState(() {
-                                loading = true;
-                              });
-
-                              print(widget.details);
-
-                              await ApiService().deleteProduct(
-                                  productId: widget.details['_id'],
-                                  context: context);
-
-                              setState(() {
-                                loading = false;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
           ],
         ),
       ),

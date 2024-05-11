@@ -124,6 +124,7 @@ class _StaffEventDetailsScreeenState extends State<StaffEventDetailsScreeen> {
                           child: CustomButton(
                             text: 'Update',
                             onPressed: () async {
+                              print(widget.details);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

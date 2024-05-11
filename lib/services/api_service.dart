@@ -76,26 +76,31 @@ class ApiService {
 
   Future<void> addComplaint(
       String loginId, String complaint, BuildContext context) async {
-    final url = Uri.parse('$baseUrl/api/user/add-complaint/$loginId');
-    final response = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: {
-        'complaint': complaint,
-        'date':
-            '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
-      },
-    );
+    print('ffffff');
+    final url = Uri.parse('$baseUrl/api/user/add-complaint/${loginId}');
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: {
+          'complaint': complaint,
+          'date':
+              '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}'
+        },
+      );
 
-    print(response.body);
+      print(response.body);
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(jsonDecode(response.body)['Message'])));
-    } else {
-      throw Exception(jsonDecode(response.body)['Message']);
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(jsonDecode(response.body)['Message'])));
+      } else {
+        throw Exception(jsonDecode(response.body)['Message']);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -344,7 +349,7 @@ class ApiService {
   Future<void> deleteProduct(
       {required String productId, required BuildContext context}) async {
     var url = Uri.parse('$baseUrl/api/staff/delete-product/$productId');
-    var response = await http.get(
+    var response = await http.delete(
       url,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

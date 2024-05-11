@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -80,6 +81,7 @@ class _StaffUpdateProductScreenState extends State<StaffUpdateProductScreen> {
         child: CustomButton(
           text: 'Update',
           onPressed: () async {
+            print(priceController.text);
             if (!areControllersEmpty()) {
               setState(() {
                 loading = true;
@@ -98,14 +100,20 @@ class _StaffUpdateProductScreenState extends State<StaffUpdateProductScreen> {
               request.fields['description'] = descriptionController.text;
 
               // Add image file
-              request.files.add(
-                await http.MultipartFile.fromPath('image', image!.path),
-              );
+              if (image != null) {
+                request.files.add(
+                  await http.MultipartFile.fromPath('image', image!.path),
+                );
+              }
 
               // Send the request
               var response = await request.send();
 
               if (response.statusCode == 200) {
+                print(response.statusCode);
+                final responseData = await response.stream.bytesToString();
+                final parsedData = json.decode(responseData);
+                print(parsedData);
                 // Handle successful response
                 print('Product added successfully');
                 ScaffoldMessenger.of(context).showSnackBar(

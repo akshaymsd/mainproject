@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:mainproject/Db/db_service.dart';
 import 'package:mainproject/modules/user/bookings/user_booking_confirmation.dart';
+import 'package:mainproject/modules/user/payment_screen.dart';
 import 'package:mainproject/services/api_service.dart';
 import 'package:mainproject/widgets/custom_button.dart';
 import 'package:mainproject/widgets/custom_text_field.dart';
@@ -22,6 +23,8 @@ class _UserPackageBookingScreeenState extends State<UserPackageBookingScreeen> {
   bool loading = false;
 
   final locationController = TextEditingController();
+
+  bool isPaid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -157,12 +160,42 @@ class _UserPackageBookingScreeenState extends State<UserPackageBookingScreeen> {
                               ),
                             ),
                           ],
-                        )
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                isPaid != false ? Text('paid') : const Text('Select payment'),
+                if (isPaid == false)
+                  CustomButton(
+                    text: 'select',
+                    onPressed: () async {
+                      isPaid = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PaymentScreen(),
+                          ));
+
+                      if (isPaid) {
+                        setState(() {});
+                      }
+                    },
+                  )
+              ],
+            ),
+            SizedBox(
+              height: 20,
             ),
             loading
                 ? const Center(
@@ -173,37 +206,44 @@ class _UserPackageBookingScreeenState extends State<UserPackageBookingScreeen> {
                     child: CustomButton(
                       text: 'Book',
                       onPressed: () async {
-                        try {
-                          setState(() {
-                            loading = true;
-                          });
+                        if (isPaid) {
+                          try {
+                            setState(() {
+                              loading = true;
+                            });
 
-                          if (locationController.text.isNotEmpty &&
-                              newDateTime != null) {
-                            await ApiService().bookEvent(
-                                context,
-                                DbService.getLoginId(),
-                                widget.details['_id'],
-                                '${newDateTime!.day}-${newDateTime!.month}-${newDateTime!.year}',
-                                locationController.text);
+                            if (locationController.text.isNotEmpty &&
+                                newDateTime != null) {
+                              await ApiService().bookEvent(
+                                  context,
+                                  DbService.getLoginId(),
+                                  widget.details['_id'],
+                                  '${newDateTime!.day}-${newDateTime!.month}-${newDateTime!.year}',
+                                  locationController.text);
 
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      UserBookingConfirmScreen(),
-                                ));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text('Date and location Required')),
-                            );
-                          }
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        UserBookingConfirmScreen(),
+                                  ));
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content:
+                                        Text('Date and location Required')),
+                              );
+                            }
 
-                          setState(() {
-                            loading = false;
-                          });
-                        } catch (e) {}
+                            setState(() {
+                              loading = false;
+                            });
+                          } catch (e) {}
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Select payment'
+                                  '')));
+                        }
                       },
                     ),
                   )

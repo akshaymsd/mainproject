@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:mainproject/modules/user/add_review_screen.dart';
+import 'package:mainproject/modules/user/bookings/user_booking.dart';
 import 'package:mainproject/modules/user/home/widgets/events_packages.dart';
 import 'package:mainproject/modules/user/home/widgets/product_widget.dart';
+import 'package:mainproject/widgets/custom_button.dart';
 
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({super.key});
@@ -57,22 +60,22 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             const SizedBox(
               height: 20,
             ),
-            // SizedBox(
-            //   width: MediaQuery.of(context).size.width,
-            //   child: CustomButton(
-            //     text: 'Book your event',
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => const UserBookingScreen(),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            //
-            //
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: CustomButton(
+                text: 'Add review',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddReview(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            
+            
             const SizedBox(
               height: 20,
             ),

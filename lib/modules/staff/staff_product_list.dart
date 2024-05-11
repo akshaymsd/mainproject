@@ -14,6 +14,10 @@ class StaffProductList extends StatelessWidget {
     final response = await http.get(url);
 
     if (response.statusCode == 201) {
+
+      
+
+
       final List<dynamic> data = jsonDecode(response.body)['data'];
       return data;
     } else {
@@ -101,6 +105,7 @@ class StaffProductList extends StatelessWidget {
                             child: CustomButton(
                               text: 'view more',
                               onPressed: () {
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
